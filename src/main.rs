@@ -1,5 +1,5 @@
 use std::io;
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize};
 
 #[derive(Deserialize, Debug)]
 struct PokemonData {
@@ -34,14 +34,19 @@ struct Pokemon {
 
 impl From<PokemonData> for Pokemon {
   fn from(i: PokemonData) -> Pokemon {
+    let mut stats = i.stats.iter();
+    let hp = stats.find(|&stat| stat.stat.name == "hp" ).unwrap();
+    let attack = stats.find(|&stat| stat.stat.name == "attack" ).unwrap();
+    let defense = stats.find(|&stat| stat.stat.name == "defense" ).unwrap();
+
     Pokemon {
       id: i.id,
       name: i.name,
       weight: i.weight,
       height: i.height,
-      hp: i.stats[0].value,
-      attack: i.stats[1].value,
-      defense: i.stats[2].value,
+      hp: hp.value,
+      attack: attack.value,
+      defense: defense.value,
     }
   }
 }
