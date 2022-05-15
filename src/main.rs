@@ -1,12 +1,49 @@
 use std::io;
-use serde::Deserialize;
+use serde::{Deserialize,Serialize};
 
 #[derive(Deserialize, Debug)]
-struct Pokemon {
-  id: i32,
+struct PokemonData {
+  id: u32,
   name: String,
-  weight: i32,
-  height: i32,
+  weight: u32,
+  height: u32,
+  stats: Vec<PokemonStat>,
+}
+
+#[derive(Deserialize,Debug)]
+struct PokemonStat {
+  #[serde(rename = "base_stat")]
+  value: u32,
+  stat: PokemonStatName,
+}
+
+#[derive(Deserialize, Debug)]
+struct PokemonStatName {
+  name: String
+}
+#[derive(Deserialize, Debug)]
+struct Pokemon {
+  id: u32,
+  name: String,
+  weight: u32,
+  height: u32,
+  hp: u32,
+  attack: u32,
+  defense: u32,
+}
+
+impl From<PokemonData> for Pokemon {
+  fn from(i: PokemonData) -> Pokemon {
+    Pokemon {
+      id: i.id,
+      name: i.name,
+      weight: i.weight,
+      height: i.height,
+      hp: i.stats[0].value,
+      attack: i.stats[1].value,
+      defense: i.stats[2].value,
+    }
+  }
 }
 
 #[tokio::main]
@@ -20,8 +57,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     .await?
     .json::<serde_json::Value>()
     .await?;
-    let mew: Pokemon = serde_json::from_value(resp).unwrap();
+    let pokemon: PokemonData = serde_json::from_value(resp).expect("wrong Format");
+    let pokemon_parsed = Pokemon::from(pokemon);
 
-  println!("{:?}",mew);
+  println!("{:?}",pokemon_parsed);
   Ok(())
 }
