@@ -1,5 +1,5 @@
 use std::io;
-use serde::{Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Debug)]
 struct PokemonData {
@@ -21,7 +21,8 @@ struct PokemonStat {
 struct PokemonStatName {
   name: String
 }
-#[derive(Deserialize, Debug)]
+
+#[derive(Deserialize, Debug, Serialize)]
 struct Pokemon {
   id: u32,
   name: String,
