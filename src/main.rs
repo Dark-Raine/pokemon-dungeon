@@ -20,7 +20,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
   let pokemon: PokemonData = serde_json::from_value(resp).expect("wrong Format");
   let pokemon_parsed = Pokemon::from(pokemon);
   let mut stdout = io::stdout();
-  writeln!(stdout, "{:?}", pokemon_parsed);
+  if let Err(e) = writeln!(stdout, "{:?}", pokemon_parsed) {
+    println!("Writing Error: {}", e.to_string())
+  }
 
   Ok(())
 }
