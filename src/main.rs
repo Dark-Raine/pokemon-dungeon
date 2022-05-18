@@ -2,7 +2,8 @@ mod pokiapi_core;
 
 use std::io;
 use std::io::Write;
-use pokiapi_core::pokemon_data_structure::{PokemonData,Pokemon};
+use pokiapi_core::pokemon_data_structure::PokemonData;
+use pokiapi_core::pokemon_structure::Pokemon;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
