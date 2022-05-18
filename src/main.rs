@@ -1,3 +1,5 @@
+mod pokiapi_core;
+
 use serde::{Deserialize, Serialize};
 use std::io;
 use std::io::Write;
